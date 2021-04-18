@@ -1,6 +1,6 @@
 var db = require ('../db');
 exports.getInventarioDetalle = function (req,resp) {
-	var instruction = "execute SP_ConsultaInventarioDetalle ";
+	var instruction = "execute ConsultaInventariosDetalle ";
 
 	if (req.body.id == "") instruction+="null";
 	else instruction+=req.body.id
