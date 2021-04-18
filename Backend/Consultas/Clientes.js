@@ -3,21 +3,21 @@ exports.getClientes = function(req, resp) {
     var instruction = "execute ConsultaClientes ";
 
     if (req.body.cliente == "") {
-        instruction += "null,";
+        instruction += "'',";
     } else {
         instruction += "'";
         instruction += req.body.cliente + "',";
     }
 
     if (req.body.categoria == "") {
-        instruction += "null,";
+        instruction += "'',";
     } else {
         instruction += "'";
         instruction += req.body.categoria + "',";
     }
 
     if (req.body.entrega == "") {
-        instruction += "null";
+        instruction += "''";
     } else {
         instruction += "'";
         instruction += req.body.entrega + "'";

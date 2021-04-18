@@ -2,13 +2,13 @@ var db = require ('../db');
 exports.getProveedores = function (req,resp) {
 	var instruction = "execute ConsultaProveedores ";
 
-	if (req.body.proveedor == "") instruction+="null,";
+	if (req.body.proveedor == "") instruction+="'',";
 	else  {instruction+="'";instruction+=req.body.proveedor+"',"} 
 
-	if (req.body.categoria == "") instruction+="null,";
+	if (req.body.categoria == "") instruction+="'',";
 	else {instruction+="'";instruction+=req.body.categoria+"',"}
 
-	if (req.body.entrega == "") instruction+="null";
+	if (req.body.entrega == "") instruction+="''";
     else {instruction+="'";instruction+=req.body.entrega+"'"}
     
 	console.log(instruction);

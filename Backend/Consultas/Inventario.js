@@ -2,10 +2,10 @@ var db = require ('../db');
 exports.getInventario = function (req,resp) {
 	var instruction = "execute ConsultaInventarios ";
 
-	if (req.body.inventario == "") instruction+="null,";
+	if (req.body.inventario == "") instruction+="'',";
 	else {instruction+="'";instruction+=req.body.inventario+"',"} 
 
-	if (req.body.grupo == "") instruction+="null,";
+	if (req.body.grupo == "") instruction+="'',";
 	else  {instruction+="'";instruction+=req.body.grupo+"',"} 
 
 	if (req.body.cantidad == "") instruction+="null";
