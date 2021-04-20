@@ -1,21 +1,21 @@
 var db = require ('../db');
 exports.getVentas = function (req,resp) {
-	var instruction = "execute SP_ConsultaVentas ";
+	var instruction = "execute ConsultaVentas ";
 
 	if (req.body.numFactura == "") instruction+="null,";
 	else  {instruction+=req.body.numFactura+","} 
 
-	if (req.body.cliente == "") instruction+="null,";
-	else {instruction+="'";instruction+=req.body.cliente+"',"}
-
-	if (req.body.entrega == "") instruction+="null,";
-    else {instruction+="'";instruction+=req.body.entrega+"',"}
-    
 	if (req.body.fecha1 == "") instruction+="null,";
     else {instruction+="'";instruction+=req.body.fecha1+"',"}
 
 	if (req.body.fecha2 == "") instruction+="null,";
     else {instruction+="'";instruction+=req.body.fecha2+"',"}
+	
+	if (req.body.cliente == "") instruction+="null,";
+	else {instruction+="'";instruction+=req.body.cliente+"',"}
+
+	if (req.body.entrega == "") instruction+="null,";
+    else {instruction+="'";instruction+=req.body.entrega+"',"}
     
 	if (req.body.montoMinimo == "") instruction+="null,";
     else {instruction+=req.body.montoMinimo+","}

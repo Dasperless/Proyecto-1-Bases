@@ -174,9 +174,9 @@ export const HomeScreen = () => {
                                 <tr>
                                     <td>{dato.SupplierName}</td>
                                     <td>{dato.SupplierCategoryName}</td>
-                                    <td>{<span className="float-right">{currencyFormat(dato.maxAmount)}</span>}</td>
-                                    <td>{<span className="float-right">{currencyFormat(dato.minAmount)}</span>}</td>
-                                    <td>{<span className="float-right">{currencyFormat(dato.averageAmount)}</span>}</td>
+                                    <td>{<span className="float-right">{currencyFormat(dato.Minimo)}</span>}</td>
+                                    <td>{<span className="float-right">{currencyFormat(dato.Maximo)}</span>}</td>
+                                    <td>{<span className="float-right">{currencyFormat(dato.promedio)}</span>}</td>
                                 </tr>
                             ))
                         }
@@ -229,11 +229,11 @@ export const HomeScreen = () => {
                         {
                             dato2.map((dato) => (
                                 <tr>
-                                    <td>{dato.customerName}</td>
+                                    <td>{dato.CustomerName}</td>
                                     <td>{dato.CustomerCategoryName}</td>
-                                    <td>{currencyFormat(dato.maxAmount)}</td>
-                                    <td>{currencyFormat(dato.minAmount)}</td>
-                                    <td>{currencyFormat(dato.avgAmount)}</td>
+                                    <td>{currencyFormat(dato.minimo)}</td>
+                                    <td>{currencyFormat(dato.maximo)}</td>
+                                    <td>{currencyFormat(dato.promedio)}</td>
                                 </tr>
                             ))
                         }
@@ -297,7 +297,6 @@ export const HomeScreen = () => {
                     <thead>
                         <tr>
                             <th scope="col">Producto</th>
-                            {/* <th scope="col">Fecha</th> */}
                             <th scope="col" className="text-right">Total de ganancia</th>
                             <th scope="col" className="text-center">Rank</th>
                         </tr>
@@ -306,10 +305,9 @@ export const HomeScreen = () => {
                         {
                             dato3.map((dato) => (
                                 <tr>
-                                    <td>{dato.Description}</td>
-                                    {/* <td>{dato.InvoiceDate}</td> */}
-                                    <td>{<span className="float-right">{currencyFormat(dato.extendedPrice)}</span>}</td>
-                                    <td>{<div className="text-center">{dato.rank}</div>}</td>
+                                    <td>{dato.StockItemName}</td>
+                                    <td>{<span className="float-right">{currencyFormat(dato.Ganancia)}</span>}</td>
+                                    <td>{<div className="text-center">{dato.Ranking}</div>}</td>
                                 </tr>
                             ))
                         }
@@ -370,7 +368,6 @@ export const HomeScreen = () => {
                     <thead>
                         <tr>
                             <th scope="col">Nombre cliente</th>
-                            {/* <th scope="col">Fecha</th> */}
                             <th scope="col">Cantidad de facturas</th>
                             <th scope="col" className="text-right" >Monto total facturado</th>
                             <th scope="col" className="text-center">Rank</th>
@@ -381,9 +378,9 @@ export const HomeScreen = () => {
                             dato4.map((dato) => (
                                 <tr>
                                     <td>{dato.CustomerName}</td>
-                                    <td>{dato.cantidadFacturas}</td>
-                                    <td>{<span className="float-right">{currencyFormat(dato.montoTotalFacturas)}</span>}</td>
-                                    <td>{<div className="text-center">{dato.rank}</div>}</td>
+                                    <td>{dato.TotalSold}</td>
+                                    <td>{<span className="float-right">{currencyFormat(dato.TotalInvoices)}</span>}</td>
+                                    <td>{<div className="text-center">{dato.Ranking}</div>}</td>
                                 </tr>
                             ))
                         }
@@ -446,7 +443,6 @@ export const HomeScreen = () => {
                     <thead>
                         <tr>
                             <th scope="col">Nombre proveedor</th>
-                            {/* <th scope="col">Fecha</th> */}
                             <th scope="col" className="text-right">Monto de transacción</th>
                             <th scope="col" className="text-center">Cantidad de ordenes</th>
                             <th scope="col">Rank</th>
@@ -457,11 +453,9 @@ export const HomeScreen = () => {
                             dato5.map((dato) => (
                                 <tr>
                                     <td>{dato.SupplierName}</td>
-                                    {/* <td>{dato.OrderDate}</td> */}
-                                    <td>{<span className="float-right">{currencyFormat(dato.transactionAmount)}</span>}</td>
-
-                                    <td>{<div className="text-center">{dato.cantidadOrdenes}</div>}</td>
-                                    <td>{dato.rank}</td>
+                                    <td>{<span className="float-right">{currencyFormat(dato.TotalOrdersAmount)}</span>}</td>
+                                    <td>{<div className="text-center">{dato.TotalOrders}</div>}</td>
+                                    <td>{dato.Ranking}</td>
                                 </tr>
                             ))
                         }

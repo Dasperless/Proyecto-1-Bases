@@ -87,7 +87,7 @@ AS
 BEGIN
 IF (@QuantitySerch = -1 or @QuantitySerch IS NULL)
 	BEGIN
-	SELECT DISTINCT wsi.StockItemName, ps.SupplierName, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName, wpts.PackageTypeName, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
+	SELECT DISTINCT wsi.StockItemName, ps.SupplierName,wsg.StockGroupName, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName, wpts.PackageTypeName, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
 		   wsi.RecommendedRetailPrice, wsi.TypicalWeightPerUnit, wsi.SearchDetails, wsi.QuantityPerOuter,
 		   ISNULL(wsi.Brand, 'N/A') Brand, ISNULL(wsi.Size,'N/A') Size, wsi.TaxRate, wsi.UnitPrice, wsih.QuantityOnHand, wsih.BinLocation
 	FROM Warehouse.StockItems wsi
@@ -285,12 +285,13 @@ GROUP BY sc.CustomerName
 END
 GO
 
-CREATE PROC ConsultaEstadisticaCinco
+CREATE PROC  ConsultaEstadisticaCinco
 	@MinDateSerch date,
 	@MaxDateSerch date
 AS
 BEGIN
-SELECT ps.SupplierName, SUM(pst.TransactionAmount) TotalOrdersAmount, COUNT(ppo.PurchaseOrderID) TotalOrders
+SELECT ps.SupplierName, SUM(pst.TransactionAmount) TotalOrdersAmount, COUNT(ppo.PurchaseOrderID) TotalOrders,
+	   RANK() OVER(ORDER BY COUNT(ppo.PurchaseOrderID) DESC) Ranking 
 FROM Purchasing.PurchaseOrders ppo
 INNER JOIN Purchasing.Suppliers ps ON ppo.SupplierID=ps.SupplierID
 INNER JOIN Purchasing.SupplierTransactions pst ON pst.PurchaseOrderID=ppo.PurchaseOrderID

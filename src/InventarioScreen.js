@@ -69,7 +69,6 @@ export const InventarioScreen = () => {
             <hr />
             <br></br>
             <h5> Búsqueda de productos por filtros</h5>
-            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
             <form onSubmit={handleSubmit}>
                 <div className="Container">
                     <div className="form-row">

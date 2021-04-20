@@ -1,6 +1,6 @@
 var db = require ('../db');
 exports.getEstadisticaProveedores = function (req,resp) {
-	var instruction = "execute SP_EstadisticaProveedores ";
+	var instruction = "execute ConsultaEstadisticaUno ";
 
 	if (req.body.nombre == "") {instruction+="null";}
 	else {instruction+="'";instruction+=req.body.nombre+"'"}
