@@ -158,7 +158,6 @@ AS
 BEGIN
 IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch is NULL)
 	BEGIN
-	select @InvoiceIDSerch
 	SELECT si.InvoiceID, sc.CustomerName, adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
 		   ap.FullName ContactPerson, ps.SupplierName, si.InvoiceDate, si.DeliveryInstructions,
 		   tia.TotalAmount
