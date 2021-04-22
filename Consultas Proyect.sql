@@ -156,8 +156,9 @@ CREATE PROC ConsultaEncabezadoFactura
 	@MaxAmountSerch int
 AS
 BEGIN
-IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch = NULL)
+IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch is NULL)
 	BEGIN
+	select @InvoiceIDSerch
 	SELECT si.InvoiceID, sc.CustomerName, adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
 		   ap.FullName ContactPerson, ps.SupplierName, si.InvoiceDate, si.DeliveryInstructions,
 		   tia.TotalAmount
@@ -168,7 +169,7 @@ IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch = NULL)
 	INNER JOIN Purchasing.PurchaseOrders po ON po.PurchaseOrderID=si.OrderID
 	INNER JOIN Purchasing.Suppliers ps ON ps.SupplierID= po.SupplierID
 	INNER JOIN TotalInvoiceAmount tia ON tia.InvoiceID=si.InvoiceID
-	WHERE si.InvoiceDate between @MinDateSerch and @MaxDateSerch and
+	WHERE si.InvoiceDate between coalesce(@MinDateSerch,si.InvoiceDate ) and coalesce(@MaxDateSerch,si.InvoiceDate)and
 	sc.CustomerName like '%'+@CustomerNameSerch+'%' and
 	adm.DeliveryMethodName like '%'+@DeliveryMethodNameSerch+'%' and
 	tia.TotalAmount between @MinAmountSerch and @MaxAmountSerch
@@ -187,13 +188,12 @@ ELSE
 	INNER JOIN Purchasing.Suppliers ps ON ps.SupplierID= po.SupplierID
 	INNER JOIN TotalInvoiceAmount tia ON tia.InvoiceID=si.InvoiceID
 	WHERE si.InvoiceID = @InvoiceIDSerch and
-	si.InvoiceDate between @MinDateSerch and @MaxDateSerch and
+	si.InvoiceDate between coalesce(@MinDateSerch,si.InvoiceDate ) and coalesce(@MaxDateSerch,si.InvoiceDate)  and
 	sc.CustomerName like '%'+@CustomerNameSerch+'%' and
 	adm.DeliveryMethodName like '%'+@DeliveryMethodNameSerch+'%' and
 	tia.TotalAmount between @MinAmountSerch and @MaxAmountSerch
 	ORDER BY sc.CustomerName
 	END
-END
 GO
 
 
