@@ -417,9 +417,9 @@ export const VentaScreen = () => {
                         </td>
                         <td>{data.Quantity}</td>
                         <td>{currencyFormat(data.UnitPrice)}</td>
-                        <td>{data.TaxRate} %</td>
+                        <td>{data.TaxRate}</td>
                         <td>{currencyFormat(data.TaxAmount)}</td>
-                        <td>{currencyFormat(data.TotalLine)}</td>
+                        <td>{currencyFormat(data.ExtendedPrice)}</td>
                       </tr>
                     ))}
 
@@ -513,7 +513,7 @@ export const VentaScreen = () => {
                       <label htmlFor="telefono" className="col-form-label">
                         <b>Contacto primario:</b>
                       </label>
-                      <p id="telefono">{data.PrimaryContactFullName}</p>
+                      <p id="telefono">{data.PrimaryContact}</p>
                     </div>
                   </div>
                   <div className="form-row">
@@ -521,7 +521,7 @@ export const VentaScreen = () => {
                       <label htmlFor="telefono" className="col-form-label">
                         <b>Contacto secundario:</b>
                       </label>
-                      <p id="telefono">{data.AlternativeContactFullName}</p>
+                      <p id="telefono">{data.AlternativeContact}</p>
                     </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="Sitioweb" className="col-form-label">
@@ -546,13 +546,13 @@ export const VentaScreen = () => {
                       <label htmlFor="telefono" className="col-form-label">
                         <b>Dirección:</b>
                       </label>
-                      <p id="telefono">{data.DireccionCliente}</p>
+                      <p id="telefono">{data.CustomerAddress}</p>
                     </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="telefono" className="col-form-label">
                         <b>Ciudad de entrega:</b>
                       </label>
-                      <p id="telefono">{data.deliveryCity}</p>
+                      <p id="telefono">{data.CityName}</p>
                     </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="telefono" className="col-form-label">
@@ -641,7 +641,7 @@ export const VentaScreen = () => {
                       >
                         <b>Empaquetamiento:</b>
                       </label>
-                      <p id="Empaquetamiento">{data.outerPackage}</p>
+                      <p id="Empaquetamiento">{data.OuterPackage}</p>
                     </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="Precio venta" className="col-form-label">
@@ -676,7 +676,7 @@ export const VentaScreen = () => {
                         <b>Cantidad de empaquetamiento:</b>
                       </label>
                       <p id="Cantidad de empaquetamiento">
-                        {data.quantityPackage}
+                        {data.QuantityPerOuter}
                       </p>
                     </div>
                     <div className="form-group col-md-4">

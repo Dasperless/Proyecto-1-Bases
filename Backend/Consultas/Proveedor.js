@@ -22,7 +22,4 @@ exports.getProveedores = function (req,resp) {
 			resp.json(data.recordset)
 		}
 	});
-};
-
-
-// {"proveedor":"Jackson","categoria":"Binden","entrega":"Trumpita"}
+};	

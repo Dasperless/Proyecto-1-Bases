@@ -182,7 +182,7 @@ export const InventarioScreen = () => {
                                         <div className="form-row">
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="Empaquetamiento" className="col-form-label"><b>Empaquetamiento:</b></label>
-                                                <p id="Empaquetamiento">{data.outerPackage}</p>
+                                                <p id="Empaquetamiento">{data.OuterPackage}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="Precio venta" className="col-form-label"><b>Precio venta:</b></label>
@@ -200,7 +200,7 @@ export const InventarioScreen = () => {
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="Cantidad de empaquetamiento" className="col-form-label"><b>Cantidad de empaquetamiento:</b></label>
-                                                <p id="Cantidad de empaquetamiento" >{data.quantityPackage}</p>
+                                                <p id="Cantidad de empaquetamiento" >{data.QuantityPerOuter}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="Marca" className="col-form-label"><b>Marca:</b></label>
@@ -282,11 +282,11 @@ export const InventarioScreen = () => {
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Contacto primario:</b></label>
-                                                <p id="telefono">{data.PrimaryContactFullName}</p>
+                                                <p id="telefono">{data.PrimaryContact}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Contacto secundario:</b></label>
-                                                <p id="telefono">{data.AlternativeContactFullName}</p>
+                                                <p id="telefono">{data.AlternativeContact}</p>
                                             </div>
                                         </div>
                                         <div className="form-row">

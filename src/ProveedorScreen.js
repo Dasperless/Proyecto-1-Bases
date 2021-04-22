@@ -191,11 +191,11 @@ export const ProveedorScreen = () => {
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Contacto primario:</b></label>
-                                                <p id="telefono">{data.PrimaryContactFullName}</p>
+                                                <p id="telefono">{data.PrimaryContact}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Contacto secundario:</b></label>
-                                                <p id="telefono">{data.AlternativeContactFullName}</p>
+                                                <p id="telefono">{data.AlternativeContact}</p>
                                             </div>
                                         </div>
                                         <div className="form-row">

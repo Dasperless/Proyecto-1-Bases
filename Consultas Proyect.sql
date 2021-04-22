@@ -73,7 +73,7 @@ AS
 BEGIN
 IF (@DeliveryMethodNameSerch = '')
 	BEGIN
-	SELECT ps.SupplierReference, ps.SupplierName, psc.SupplierCategoryName, p.FullName PrimaryContact,
+	SELECT ps.SupplierID, ps.SupplierReference, ps.SupplierName, psc.SupplierCategoryName, p.FullName PrimaryContact,
 		   pe.FullName AlternativeContact, ISNULL(adm.DeliveryMethodName, 'N/A') DeliveryMethodName, ac.CityName, ps.DeliveryPostalCode,
 		   ps.PhoneNumber, ps.FaxNumber, ps.WebsiteURL, aco.CountryName+', '+asp.StateProvinceName+', '+ac.CityName+', '+
     	   ps.DeliveryAddressLine2 SupplierAddress, ps.DeliveryLocation, ps.BankAccountName, ps.BankAccountNumber, ps.PaymentDays
@@ -91,7 +91,7 @@ IF (@DeliveryMethodNameSerch = '')
 	END
 ELSE
 	BEGIN
-	SELECT ps.SupplierReference, ps.SupplierName, psc.SupplierCategoryName, p.FullName PrimaryContact,
+	SELECT ps.SupplierID, ps.SupplierReference, ps.SupplierName, psc.SupplierCategoryName, p.FullName PrimaryContact,
 		   pe.FullName AlternativeContact, adm.DeliveryMethodName, ac.CityName, ps.DeliveryPostalCode,
 		   ps.PhoneNumber, ps.FaxNumber, ps.WebsiteURL, aco.CountryName+', '+asp.StateProvinceName+', '+ac.CityName+', '+
 		   ps.DeliveryAddressLine2 SupplierAddress, ps.DeliveryLocation, ps.BankAccountName, ps.BankAccountNumber, ps.PaymentDays
@@ -111,6 +111,27 @@ ELSE
 END
 GO
 
+--ESTE PROCEDIMIENTO TIENE SE UTILIZA PARA CONSULTAR LOS DETALLES DEL PROVEEDOR POR MEDIO DEL ID
+CREATE PROC ConsultaProveedoresDetalle
+	@id nvarchar
+AS
+BEGIN
+	SELECT ps.SupplierReference, ps.SupplierName, psc.SupplierCategoryName, p.FullName PrimaryContact,
+		   pe.FullName AlternativeContact, ISNULL(adm.DeliveryMethodName, 'N/A') DeliveryMethodName, ac.CityName, ps.DeliveryPostalCode,
+		   ps.PhoneNumber, ps.FaxNumber, ps.WebsiteURL, aco.CountryName+', '+asp.StateProvinceName+', '+ac.CityName+', '+
+    	   ps.DeliveryAddressLine2 SupplierAddress, ps.DeliveryLocation, ps.BankAccountName, ps.BankAccountNumber, ps.PaymentDays
+	FROM Purchasing.Suppliers ps
+	INNER JOIN Purchasing.SupplierCategories psc ON psc.SupplierCategoryID=ps.SupplierCategoryID
+	FULL JOIN Application.DeliveryMethods adm ON adm.DeliveryMethodID=ps.DeliveryMethodID
+	INNER JOIN Application.Cities ac ON ac.CityID=ps.DeliveryCityID
+	INNER JOIN Application.People p ON p.PersonID=ps.PrimaryContactPersonID
+	INNER JOIN Application.People pe ON pe.PersonID=ps.AlternateContactPersonID
+	INNER JOIN Application.StateProvinces asp ON ac.StateProvinceID=asp.StateProvinceID
+	INNER JOIN Application.Countries aco ON aco.CountryID=asp.CountryID
+	WHERE ps.SupplierID = @id
+END
+GO
+
 --ESTE PROCEDIMIENTO ALMACENADO SE UTILIZA PARA CONSULTAS DEL MÓDULO DE INVENTARIOS
 CREATE PROC ConsultaInventarios
 	@ItemNameSerch nvarchar(100),
@@ -120,7 +141,7 @@ AS
 BEGIN
 IF (@QuantitySerch = -1 or @QuantitySerch IS NULL)
 	BEGIN
-	SELECT DISTINCT wsi.StockItemName, ps.SupplierName,wsg.StockGroupName, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName, wpts.PackageTypeName, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
+	SELECT DISTINCT wsi.StockItemName, wsi.StockItemID, ps.SupplierName,wsg.StockGroupName, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName, wpts.PackageTypeName, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
 		   wsi.RecommendedRetailPrice, wsi.TypicalWeightPerUnit, wsi.SearchDetails, wsi.QuantityPerOuter,
 		   ISNULL(wsi.Brand, 'N/A') Brand, ISNULL(wsi.Size,'N/A') Size, wsi.TaxRate, wsi.UnitPrice, wsih.QuantityOnHand, wsih.BinLocation
 	FROM Warehouse.StockItems wsi
@@ -137,7 +158,7 @@ IF (@QuantitySerch = -1 or @QuantitySerch IS NULL)
 	END
 ELSE
 	BEGIN
-	SELECT DISTINCT wsi.StockItemName, ps.SupplierName, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName, wpts.PackageTypeName, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
+	SELECT DISTINCT wsi.StockItemName,wsi.StockItemID, ps.SupplierName, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName, wpts.PackageTypeName, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
 		   wsi.RecommendedRetailPrice, wsi.TypicalWeightPerUnit, wsi.SearchDetails, wsi.QuantityPerOuter,
 		   ISNULL(wsi.Brand, 'N/A') Brand, ISNULL(wsi.Size,'N/A') Size, wsi.TaxRate, wsi.UnitPrice, wsih.QuantityOnHand, wsih.BinLocation
 	FROM Warehouse.StockItems wsi
@@ -153,6 +174,27 @@ ELSE
 	and wsih.QuantityOnHand = @QuantitySerch
 	ORDER BY wsi.StockItemName
 	END
+END
+
+GO
+
+--ESTE PROCEDIMIENTO ALMACENADO SE UTILIZA PARA CONSULTAR LOS DETALLES DEL MÓDULO DE INVENTARIOS
+CREATE ConsultaInventariosDetalle
+	@id INT
+AS
+BEGIN
+	SELECT  distinct wsi.StockItemName, SupplierName , wsi.SupplierID, ISNULL(wc.ColorName, 'N/A') ColorName, wpt.PackageTypeName UnitPackage, wpts.PackageTypeName OuterPackage, ---DISTINCT: DEBIDO A QUE AL AGREGAR INNER JOIN DE GRUPOS Y FILTRARLO POR ESTOS SE TRIPLICAN LOS REGISTROS
+			wsi.RecommendedRetailPrice, wsi.TypicalWeightPerUnit, wsi.SearchDetails, wsi.QuantityPerOuter,
+			ISNULL(wsi.Brand, 'N/A') Brand, ISNULL(wsi.Size,'N/A') Size, wsi.TaxRate, wsi.UnitPrice, wsih.QuantityOnHand, wsih.BinLocation
+	FROM Warehouse.StockItems wsi
+	INNER JOIN Purchasing.Suppliers ps ON ps.SupplierID=wsi.SupplierID
+	FULL JOIN Warehouse.Colors wc ON wc.ColorID=wsi.ColorID ---ESTO PORQUE EXISTEN PRODUCTOS SIN COLOR QUE NO SERÍAN CONTEMPLADOS
+	INNER JOIN Warehouse.PackageTypes wpt ON wpt.PackageTypeID=wsi.UnitPackageID
+	INNER JOIN Warehouse.PackageTypes wpts ON wpts.PackageTypeID=wsi.OuterPackageID
+	INNER JOIN Warehouse.StockItemHoldings wsih ON wsih.StockItemID=wsi.StockItemID
+	INNER JOIN Warehouse.StockItemStockGroups sisg ON sisg.StockItemID=wsi.StockItemID
+	--INNER JOIN Warehouse.StockGroups wsg ON wsg.StockGroupID=sisg.StockGroupID
+	WHERE wsi.StockItemID = @id
 END
 GO
 
@@ -236,7 +278,7 @@ CREATE PROC ConsultaDetalleFactura
 AS
 BEGIN
 SELECT wsi.StockItemName, sil.Quantity, sil.UnitPrice,
-	   Concat(sil.TaxRate, '%'), sil.TaxAmount, sil.ExtendedPrice
+	   Concat(sil.TaxRate, '%'), sil.TaxAmount, sil.ExtendedPrice, wsi.StockItemID
 FROM Sales.InvoiceLines sil
 INNER JOIN Warehouse.StockItems wsi ON sil.StockItemID=wsi.StockItemID
 WHERE sil.InvoiceID = @InvoiceIDSerch
