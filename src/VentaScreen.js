@@ -291,7 +291,7 @@ export const VentaScreen = () => {
               </td>
               <td>{sell.DeliveryMethodName}</td>
               <td>{sell.InvoiceDate}</td>
-              <td>{currencyFormat(sell.totalLine)}</td>
+              <td>{currencyFormat(sell.TotalAmount)}</td>
               <td key={sell.InvoiceID}>
                 <center>
                   <button

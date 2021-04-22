@@ -1,6 +1,6 @@
 var db = require ('../db');
 exports.getVentas = function (req,resp) {
-	var instruction = "execute ConsultaVentas ";
+	var instruction = "execute ConsultaEncabezadoFactura ";
 
 	if (req.body.numFactura == "") instruction+="null,";
 	else  {instruction+=req.body.numFactura+","} 
