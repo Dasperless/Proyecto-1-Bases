@@ -11,10 +11,10 @@ exports.getVentas = function (req,resp) {
 	if (req.body.fecha2 == "") instruction+="null,";
     else {instruction+="'";instruction+=req.body.fecha2+"',"}
 	
-	if (req.body.cliente == "") instruction+="null,";
+	if (req.body.cliente == "") instruction+="'',";
 	else {instruction+="'";instruction+=req.body.cliente+"',"}
 
-	if (req.body.entrega == "") instruction+="null,";
+	if (req.body.entrega == "") instruction+="'',";
     else {instruction+="'";instruction+=req.body.entrega+"',"}
     
 	if (req.body.montoMinimo == "") instruction+="null,";

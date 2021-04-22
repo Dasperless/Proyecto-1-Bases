@@ -168,10 +168,10 @@ IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch is NULL)
 	INNER JOIN Purchasing.PurchaseOrders po ON po.PurchaseOrderID=si.OrderID
 	INNER JOIN Purchasing.Suppliers ps ON ps.SupplierID= po.SupplierID
 	INNER JOIN TotalInvoiceAmount tia ON tia.InvoiceID=si.InvoiceID
-	WHERE si.InvoiceDate between coalesce(@MinDateSerch,si.InvoiceDate ) and coalesce(@MaxDateSerch,si.InvoiceDate)and
+	WHERE si.InvoiceDate between coalesce(@MinDateSerch,si.InvoiceDate) and coalesce(@MaxDateSerch,si.InvoiceDate)and
 	sc.CustomerName like '%'+@CustomerNameSerch+'%' and
 	adm.DeliveryMethodName like '%'+@DeliveryMethodNameSerch+'%' and
-	tia.TotalAmount between @MinAmountSerch and @MaxAmountSerch
+	tia.TotalAmount between coalesce(@MinAmountSerch,tia.TotalAmount) and coalesce(@MaxAmountSerch,tia.TotalAmount)
 	ORDER BY sc.CustomerName
 	END
 ELSE
@@ -190,9 +190,10 @@ ELSE
 	si.InvoiceDate between coalesce(@MinDateSerch,si.InvoiceDate ) and coalesce(@MaxDateSerch,si.InvoiceDate)  and
 	sc.CustomerName like '%'+@CustomerNameSerch+'%' and
 	adm.DeliveryMethodName like '%'+@DeliveryMethodNameSerch+'%' and
-	tia.TotalAmount between @MinAmountSerch and @MaxAmountSerch
+	tia.TotalAmount between coalesce(@MinAmountSerch,tia.TotalAmount) and coalesce(@MaxAmountSerch,tia.TotalAmount)
 	ORDER BY sc.CustomerName
 	END
+END
 GO
 
 
