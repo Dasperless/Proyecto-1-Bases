@@ -45,7 +45,7 @@ export const ClienteScreen = () => {
             "id": id
         }
         // const dataJson = JSON.stringify(id);
-        console.log(id);
+        // console.log(id);
         axios.post("http://localhost:9000/ClienteDetalle/", id)
             .then(response => {
                 const datosC = response.data;
@@ -65,7 +65,7 @@ export const ClienteScreen = () => {
                         },
                     }
                 );
-                // console.log(datosUbicacion);
+            // console.log(datosUbicacion);
             })
             .catch(error => console.log(error));
     }
@@ -200,13 +200,13 @@ export const ClienteScreen = () => {
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Contacto primario:</b></label>
-                                                <p id="telefono">{data.PrimaryContactFullName}</p>
+                                                <p id="telefono">{data.PrimaryContact}</p>
                                             </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Contacto secundario:</b></label>
-                                                <p id="telefono">{data.AlternativeContactFullName}</p>
+                                                <p id="telefono">{data.AlternativeContact}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="Sitioweb" className="col-form-label"><b>Sitio web:</b></label>
@@ -221,11 +221,11 @@ export const ClienteScreen = () => {
                                         <div className="form-row">
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Dirección:</b></label>
-                                                <p id="telefono">{data.DireccionCliente}</p>
+                                                <p id="telefono">{data.CustomerAddress}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Ciudad de entrega:</b></label>
-                                                <p id="telefono">{data.deliveryCity}</p>
+                                                <p id="telefono">{data.CityName}</p>
                                             </div>
                                             <div className="form-group col-md-4">
                                                 <label htmlFor="telefono" className="col-form-label"><b>Código postal:</b></label>

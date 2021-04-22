@@ -1,6 +1,6 @@
 var db = require ('../db');
 exports.getClienteDetalle = function (req,resp) {
-	var instruction = "execute SP_ConsultaClienteDetalle ";
+	var instruction = "execute ConsultaClienteDetalle ";
 
 	if (req.body.id == "") instruction+="null";
 	else instruction+=req.body.id

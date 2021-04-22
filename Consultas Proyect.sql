@@ -2,13 +2,14 @@ USE WideWorldImporters
 GO
 
 --ESTE PROCEDIMIENTO ALMACENADO SE UTILIZA PARA LAS CONSULTAS DEL MÓDULO CLIENTE
+
 CREATE PROC ConsultaClientes
 	@CustomerNameSerch nvarchar(100),
 	@CustomerCategoryNameSerch nvarchar(50),
 	@DeliveryMethodNameSerch nvarchar(50)
 AS
 BEGIN
-SELECT sc.CustomerName, scc.CustomerCategoryName, ISNULL(sbg.BuyingGroupName, 'N/A') BuyingGroupName,
+SELECT sc.CustomerID,sc.CustomerName,scc.CustomerCategoryName, ISNULL(sbg.BuyingGroupName, 'N/A') BuyingGroupName,
 	   p.FullName PrimaryContact, ISNULL(pe.FullName, 'N/A') AlternativeContact,
 	   adm.DeliveryMethodName, ac.CityName, sc.PostalPostalCode,
 	   sc.PhoneNumber, sc.FaxNumber, sc.PaymentDays, sc.WebsiteURL,
@@ -28,6 +29,38 @@ and scc.CustomerCategoryName like '%'+@CustomerCategoryNameSerch+'%'
 and adm.DeliveryMethodName like '%'+@DeliveryMethodNameSerch+'%'
 
 ORDER BY sc.CustomerName
+END
+GO
+
+--ESTE PROCEDIMIENTO CONSULTA LOS DETALLES DE UN CLIENTE POR ID
+CREATE PROC ConsultaClienteDetalle
+	@id int
+AS
+BEGIN
+SELECT	sc.CustomerName, 
+		scc.CustomerCategoryName, 
+		ISNULL(sbg.BuyingGroupName, 'N/A') BuyingGroupName,
+		p.FullName PrimaryContact, 
+		ISNULL(pe.FullName, 'N/A') AlternativeContact,
+		adm.DeliveryMethodName, 
+		ac.CityName, 
+		sc.PostalPostalCode,
+		sc.PhoneNumber, 
+		sc.FaxNumber, 
+		sc.PaymentDays, 
+		sc.WebsiteURL,
+		aco.CountryName+', '+asp.StateProvinceName+', '+ac.CityName+', '+ sc.DeliveryAddressLine2 CustomerAddress, 
+		sc.DeliveryLocation
+FROM Sales.Customers sc
+INNER JOIN Sales.CustomerCategories scc ON scc.CustomerCategoryID=sc.CustomerCategoryID
+INNER JOIN Application.People p ON p.PersonID=sc.PrimaryContactPersonID 
+FULL JOIN Application.People pe ON pe.PersonID=sc.AlternateContactPersonID ---FULL JOIN: ESTO PORQUE EXISTEN CLIENTES SIN ALTERNATIVECONTACT
+FULL JOIN Sales.BuyingGroups sbg ON sbg.BuyingGroupID=sc.BuyingGroupID ---FULL JOIN: ESTO PORQUE EXISTEN CLIENTES QUE NO TIENEN BUYINGGROUPS
+INNER JOIN Application.DeliveryMethods adm ON adm.DeliveryMethodID=sc.DeliveryMethodID
+INNER JOIN Application.Cities ac ON ac.CityID=sc.DeliveryCityID
+INNER JOIN Application.StateProvinces asp ON ac.StateProvinceID=asp.StateProvinceID
+INNER JOIN Application.Countries aco ON aco.CountryID=asp.CountryID
+WHERE sc.CustomerID = @id
 END
 GO
 
