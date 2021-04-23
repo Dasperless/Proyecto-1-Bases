@@ -233,7 +233,7 @@ AS
 BEGIN
 IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch is NULL)
 	BEGIN
-	SELECT si.InvoiceID, sc.CustomerName, adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
+	SELECT si.InvoiceID, sc.CustomerID, sc.CustomerName,adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
 		   ap.FullName ContactPerson, ps.SupplierName, si.InvoiceDate, si.DeliveryInstructions,
 		   tia.TotalAmount
 	FROM Sales.Invoices si
@@ -251,7 +251,7 @@ IF (@InvoiceIDSerch = -1 or @InvoiceIDSerch is NULL)
 	END
 ELSE
 	BEGIN
-	SELECT si.InvoiceID, sc.CustomerName, adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
+	SELECT si.InvoiceID, sc.CustomerID, sc.CustomerName, adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
 		   ap.FullName ContactPerson, ps.SupplierName, si.InvoiceDate, si.DeliveryInstructions,
 		   tia.TotalAmount
 	FROM Sales.Invoices si
@@ -277,12 +277,24 @@ CREATE PROC ConsultaDetalleFactura
 	@InvoiceIDSerch int
 AS
 BEGIN
-SELECT wsi.StockItemName, sil.Quantity, sil.UnitPrice,
-	   Concat(sil.TaxRate, '%'), sil.TaxAmount, sil.ExtendedPrice, wsi.StockItemID
+SELECT si.InvoiceID, sc.CustomerID, sc.CustomerName,adm.DeliveryMethodName, si.CustomerPurchaseOrderNumber,
+		ap.FullName ContactPerson, ps.SupplierName, si.InvoiceDate, si.DeliveryInstructions, ape.FullName VendorName,
+		tia.TotalAmount, wsi.StockItemName, sil.Quantity, sil.UnitPrice,
+	   Concat(sil.TaxRate, '%') TaxRate, sil.TaxAmount, sil.ExtendedPrice, wsi.StockItemID
 FROM Sales.InvoiceLines sil
+INNER JOIN Sales.Invoices si ON si.InvoiceID = sil.InvoiceID
 INNER JOIN Warehouse.StockItems wsi ON sil.StockItemID=wsi.StockItemID
-WHERE sil.InvoiceID = @InvoiceIDSerch
+INNER JOIN Sales.Customers sc ON sc.CustomerID=si.CustomerID
+INNER JOIN Application.DeliveryMethods adm ON adm.DeliveryMethodID=si.DeliveryMethodID
+INNER JOIN Application.People ap ON ap.PersonID=si.ContactPersonID
+INNER JOIN Application.People ape ON ape.PersonID=si.SalespersonPersonID
+INNER JOIN Purchasing.PurchaseOrders po ON po.PurchaseOrderID=si.OrderID
+INNER JOIN Purchasing.Suppliers ps ON ps.SupplierID= po.SupplierID
+INNER JOIN TotalInvoiceAmount tia ON tia.InvoiceID=si.InvoiceID
+WHERE si.InvoiceID = @InvoiceIDSerch
 END
+
+
 GO
 
 

@@ -24,7 +24,6 @@ export const VentaScreen = () => {
   const [Selles, setSell] = useState([]);
   const [datos, setDatos] = useState([]);
   const [datosCliente, setDatosCliente] = useState([]);
-
   const [datosProducto, setDatosProducto] = useState([]);
 
   const [totalLine, setTotalLinea] = useState();
@@ -51,6 +50,7 @@ export const VentaScreen = () => {
   };
   const getDatos = (id, total, e) => {
     setTotalLinea(total);
+    console.log(total)
     e.preventDefault();
     id = {
       id: id,
@@ -60,6 +60,7 @@ export const VentaScreen = () => {
       .then((response) => {
         const datosC = response.data;
         setDatos((c) => datosC);
+        
       })
       .catch((error) => console.log(error));
   };
@@ -296,7 +297,7 @@ export const VentaScreen = () => {
                 <center>
                   <button
                     className="btn btn-primary"
-                    onClick={(e) => getDatos(sell.InvoiceID, sell.totalLine, e)}
+                    onClick={(e) => getDatos(sell.InvoiceID, sell.TotalAmount, e)}
                     data-toggle="modal"
                     data-target=".bd-example-modal-lg"
                   >
@@ -379,7 +380,7 @@ export const VentaScreen = () => {
                                 <td>
                                   Nombre del vendedor: {data.VendorName}
                                   <br />
-                                  Persona de contacto: {data.Contact1}
+                                  Persona de contacto: {data.ContactPerson}
                                   <br />
                                 </td>
                               </tr>
@@ -429,7 +430,7 @@ export const VentaScreen = () => {
                       <td></td>
                       <td></td>
                       <td></td>
-                      <td>Total: {currencyFormatTotal(totalLine)}</td>
+                      <td>Total:{currencyFormatTotal(totalLine)}</td>
                     </tr>
                   </tbody>
                 </table>
